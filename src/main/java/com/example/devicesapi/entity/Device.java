@@ -2,9 +2,7 @@ package com.example.devicesapi.entity;
 
 import com.example.devicesapi.enums.State;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -20,6 +18,12 @@ public class Device {
 
     @Id
     @JsonProperty("id")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "DeviceSeqGen")
+    @SequenceGenerator(
+            schema = "public",
+            name = "DeviceSeqGen",
+            sequenceName = "DEVICE_SEQ",
+            allocationSize = 1)
     private long id;
 
     @JsonProperty("name")
@@ -29,8 +33,10 @@ public class Device {
     private String brand;
 
     @JsonProperty("state")
-    private State state;
+    @Column(name = "devicestate")
+    @Enumerated(EnumType.STRING)
+    private State devicestate;
 
-    @JsonProperty("creationDate")
-    private LocalDateTime creationDate;
+    @JsonProperty("creationTime")
+    private LocalDateTime creationTime;
 }

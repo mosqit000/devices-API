@@ -3,15 +3,17 @@ package com.example.devicesapi.service;
 import com.example.devicesapi.dto.DeviceDto;
 import com.example.devicesapi.entity.Device;
 import com.example.devicesapi.enums.State;
-import com.example.devicesapi.repository.DeviceMapper;
+import com.example.devicesapi.mapper.DeviceMapper;
 import com.example.devicesapi.repository.DeviceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
+import java.util.Map;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+
+import static java.util.stream.Collectors.groupingBy;
 
 @Service
 public class DeviceService {
@@ -19,20 +21,23 @@ public class DeviceService {
     @Autowired
     DeviceRepository deviceRepository;
 
+    @Autowired
     DeviceMapper deviceMapper;
 
     public void createDevice(Device device){
+        // to avoid passing wrong arguments from user or old dates
         device.setCreationTime(LocalDateTime.now());
         deviceRepository.saveAndFlush(device);
     }
 
     public void updateDevice(long id, DeviceDto device){
 
+        System.out.println("input: "+ device);
         Optional<Device> deviceToBeUpdated = deviceRepository.findById(id);
         if(deviceToBeUpdated.isPresent())
         {
             deviceMapper.updateDevicePartial(deviceToBeUpdated.get(),device);
-            deviceRepository.save(deviceToBeUpdated.get());
+            deviceRepository.saveAndFlush(deviceToBeUpdated.get());
         }
     }
 
@@ -53,7 +58,25 @@ public class DeviceService {
     }
 
     public Object deleteDeviceById(long id) {
+        if(deviceRepository.findById(id).isPresent()){
+            if(deviceRepository.findById(id).get().getDevicestate() == State.in_use)
+            {
+                throw new CustomException("delete device","device is in use");
+            }
+        }else {
+            throw new CustomException("delete device","device does not exist");
+        }
         deviceRepository.deleteById(id);
         return null;
+    }
+
+    public Map<State,List<Device>> getAllDevicesGroupedByState() {
+        return deviceRepository.findAll().stream()
+                .collect(groupingBy(device -> device.getDevicestate()));
+    }
+
+    public Map<String,List<Device>> getAllDevicesGroupedByBrand() {
+        return deviceRepository.findAll().stream()
+                .collect(groupingBy(Device::getBrand));
     }
 }

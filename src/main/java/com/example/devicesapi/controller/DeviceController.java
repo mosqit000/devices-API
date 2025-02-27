@@ -63,6 +63,20 @@ public class DeviceController {
                 deviceService.getAllDevicesByState(state));
     }
 
+    @GetMapping("brand/group")
+    public CustomResponse getDeviceGroupByBrand(){
+        return customResponse.OK( "group devices by brand",
+                String.format("devices with brand {1} fetched successfully"),
+                deviceService.getAllDevicesGroupedByBrand());
+    }
+
+    @GetMapping("state/group")
+    public CustomResponse getDeviceGroupByDeviceState(){
+        return customResponse.OK( "group devices by state",
+                String.format("devices with state {1} fetched successfully"),
+                deviceService.getAllDevicesGroupedByState());
+    }
+
     @DeleteMapping("delete/{id}")
     public CustomResponse deleteDeviceById(@PathVariable long id){
         return customResponse.OK( "fetch single device",

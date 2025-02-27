@@ -5,6 +5,7 @@ import com.example.devicesapi.entity.Device;
 import com.example.devicesapi.enums.State;
 import com.example.devicesapi.mapper.DeviceMapper;
 import com.example.devicesapi.repository.DeviceRepository;
+import com.example.devicesapi.utility.CustomException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -32,7 +33,7 @@ public class DeviceService {
 
     public void updateDevice(long id, DeviceDto device){
 
-        System.out.println("input: "+ device);
+
         Optional<Device> deviceToBeUpdated = deviceRepository.findById(id);
         if(deviceToBeUpdated.isPresent())
         {
@@ -46,6 +47,10 @@ public class DeviceService {
     }
 
     public Optional<Device> getDeviceById(long id){
+        if(deviceRepository.findById(id).isEmpty()){
+            throw new CustomException("fetch single device", "device does not exist");
+        }
+        // TODO: maybe do this as aspect
         return deviceRepository.findById(id);
     }
 

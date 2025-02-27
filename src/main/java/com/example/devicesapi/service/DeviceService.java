@@ -1,5 +1,6 @@
 package com.example.devicesapi.service;
 
+
 import com.example.devicesapi.dto.DeviceDto;
 import com.example.devicesapi.entity.Device;
 import com.example.devicesapi.enums.State;
@@ -37,28 +38,43 @@ public class DeviceService {
         Optional<Device> deviceToBeUpdated = deviceRepository.findById(id);
         if(deviceToBeUpdated.isPresent())
         {
+            if(deviceToBeUpdated.get().getDevicestate() == State.in_use){  // domain validation 2
+                if(device.getName() != deviceToBeUpdated.get().getName()
+                        || device.getName() != deviceToBeUpdated.get().getName()){
+                    throw new CustomException("update device","device is in use, can't be updated");
+                }
+            }
             deviceMapper.updateDevicePartial(deviceToBeUpdated.get(),device);
             deviceRepository.saveAndFlush(deviceToBeUpdated.get());
+        }else {
+            throw new CustomException("update device","device does not exist");
         }
     }
 
+
     public List<Device> getAllDevices(){
+        if(deviceRepository.findAll().isEmpty()){
+            throw new CustomException("fetch all devices", "no devices found");
+        }
         return deviceRepository.findAll();
     }
 
     public Optional<Device> getDeviceById(long id){
-        if(deviceRepository.findById(id).isEmpty()){
-            throw new CustomException("fetch single device", "device does not exist");
-        }
-        // TODO: maybe do this as aspect
+        // validation ran by aspect
         return deviceRepository.findById(id);
     }
 
     public List<Device> getAllDevicesByBrand(String brand){
+        if(deviceRepository.findByBrand(brand).isEmpty()){
+            throw new CustomException("fetch devices by brand", "no devices found with this brand");
+        }
         return deviceRepository.findByBrand(brand);
     }
 
     public List<Device> getAllDevicesByState(State state){
+        if(deviceRepository.findByDevicestate(state).isEmpty()){
+            throw new CustomException("fetch devices by state", "no devices found with this state");
+        }
         return deviceRepository.findByDevicestate(state);
     }
 

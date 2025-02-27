@@ -1,5 +1,6 @@
 package com.example.devicesapi.controller;
 
+import com.example.devicesapi.annotation.ICheckable;
 import com.example.devicesapi.dto.DeviceDto;
 import com.example.devicesapi.entity.Device;
 import com.example.devicesapi.enums.State;
@@ -25,6 +26,7 @@ public class DeviceController {
         return  customResponse.OK("create device","created successfully",null);
     }
 
+
     @PutMapping("update/{id}")
     public CustomResponse updateDevice(@PathVariable long id, @RequestBody DeviceDto device)
     {
@@ -41,6 +43,7 @@ public class DeviceController {
                deviceService.getAllDevices() );
     }
 
+    @ICheckable
     @GetMapping("fetch/{id}")
     public CustomResponse getDeviceByID(@PathVariable long id ){
         return customResponse.OK( "fetch single device",

@@ -1,7 +1,6 @@
-// TODO: fetch single device if id does not exist
+
 // TODO: fix string interpolation in message
-// TODO: add another API to group by brand or state
-// TODO: add exception handler
 // TODO: virtual threads
 // TODO: hikari pooling
-// Aspect
+// observer
+// tests

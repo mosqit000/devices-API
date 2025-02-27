@@ -14,8 +14,6 @@ public interface DeviceMapper{
              nullValueCheckStrategy = NullValueCheckStrategy.ALWAYS )
     @Mapping(target =  "id", ignore = true) // to make sure ID change attempts won't happen -> no unwanted exceptions
     @Mapping(target =  "creationTime", ignore = true) // domain validation 1
-    @Mapping(target = "brand", conditionExpression = "java(dto.getDevicestate() == State.in_use)", ignore = true) // domain validation 2.1
-    @Mapping(target = "name", conditionExpression = "java(dto.getDevicestate() == State.in_use)", ignore = true) // domain validation 2.2
     void updateDevicePartial(@MappingTarget Device device,
                             DeviceDto dto);
 }

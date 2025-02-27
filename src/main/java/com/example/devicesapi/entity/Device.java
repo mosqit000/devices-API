@@ -2,6 +2,7 @@ package com.example.devicesapi.entity;
 
 import com.example.devicesapi.enums.State;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -17,6 +18,7 @@ import java.time.LocalDateTime;
 public class Device {
 
     @Id
+    @Schema(hidden = true)
     @JsonProperty("id")
     @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "DeviceSeqGen")
     @SequenceGenerator(
@@ -37,6 +39,7 @@ public class Device {
     @Enumerated(EnumType.STRING)
     private State devicestate;
 
+    @Schema(hidden = true)
     @JsonProperty("creationTime")
     private LocalDateTime creationTime;
 }

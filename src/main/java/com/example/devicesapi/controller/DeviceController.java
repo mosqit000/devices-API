@@ -6,6 +6,8 @@ import com.example.devicesapi.entity.Device;
 import com.example.devicesapi.enums.State;
 import com.example.devicesapi.service.DeviceService;
 import com.example.devicesapi.utility.CustomResponse;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -22,13 +24,16 @@ public class DeviceController {
     @Autowired
     CustomResponse customResponse;
 
+    @Operation(summary = "create new device",
+            description = "pass in a device to store and persist a new device, keep in mind that IDs cannot be passed or manipulated")
     @PostMapping("create")
     public CustomResponse CreateDevice(@Validated @RequestBody Device device){
         deviceService.createDevice(device);
         return  customResponse.OK("create device","created successfully",null);
     }
 
-
+   @Operation(summary = "update an existing device",
+   description = "pass in a device or a partial device to update it along with the ID as a path variable")
     @PutMapping("update/{id}")
     public CustomResponse updateDevice(@PathVariable long id, @RequestBody DeviceDto device)
     {
@@ -38,6 +43,8 @@ public class DeviceController {
                 null);
     }
 
+    @Operation(summary = "get all device",
+            description = "get all available devices")
     @GetMapping("getAll")
     public CustomResponse getAllDevices(){
        return customResponse.OK("fetch all devices ",
@@ -45,6 +52,8 @@ public class DeviceController {
                deviceService.getAllDevices() );
     }
 
+    @Operation(summary = "fetch a single device",
+            description = "get a single device by its ID, or an error if it does not exist")
     @ICheckable
     @GetMapping("fetch/{id}")
     public CustomResponse getDeviceByID(@PathVariable long id ){
@@ -54,6 +63,8 @@ public class DeviceController {
 
     }
 
+    @Operation(summary = "get devices by brand",
+            description = "pass in a brand to retrieve a list of devices that share that brand")
     @GetMapping("brand/{brand}")
     public CustomResponse getDevicesByBrand(@PathVariable String brand){
         return customResponse.OK( "fetch devices by brand",
@@ -61,6 +72,8 @@ public class DeviceController {
                 deviceService.getAllDevicesByBrand(brand));
     }
 
+    @Operation(summary = "get devices by state",
+            description = "pass in a state to retrieve a list of devices that share that state")
     @GetMapping("state/{state}")
     public CustomResponse getDevicesByDeviceState(@PathVariable State state){
         return customResponse.OK( "fetch devices by state",
@@ -68,6 +81,8 @@ public class DeviceController {
                 deviceService.getAllDevicesByState(state));
     }
 
+    @Operation(summary = "get devices grouped by brand",
+            description = "retrieve groups of devices that share a brand")
     @GetMapping("brand/group")
     public CustomResponse getDeviceGroupByBrand(){
         return customResponse.OK( "group devices by brand",
@@ -75,6 +90,8 @@ public class DeviceController {
                 deviceService.getAllDevicesGroupedByBrand());
     }
 
+    @Operation(summary = "get devices grouped by state",
+            description = "retrieve groups of devices that share a brand")
     @GetMapping("state/group")
     public CustomResponse getDeviceGroupByDeviceState(){
         return customResponse.OK( "group devices by state",
@@ -82,6 +99,8 @@ public class DeviceController {
                 deviceService.getAllDevicesGroupedByState());
     }
 
+    @Operation(summary = "delete a device",
+            description = "pass in the ID of the device as a path variable to delete it if it exists, noting that it can't be deleted if it's in use")
     @DeleteMapping("delete/{id}")
     public CustomResponse deleteDeviceById(@PathVariable long id){
         return customResponse.OK( "fetch single device",

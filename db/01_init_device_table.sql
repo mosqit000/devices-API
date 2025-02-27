@@ -12,3 +12,10 @@ CREATE TABLE IF NOT EXISTS public.device
 CREATE SEQUENCE public.DEVICE_SEQ;
 
 GRANT ALL ON ALL SEQUENCES IN SCHEMA public TO amer;
+
+CREATE TABLE IF NOT EXISTS public.users
+(
+    id                serial           primary key,
+    username          varchar          not null,
+    password          varchar          not null
+);

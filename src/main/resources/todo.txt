@@ -1,7 +1,3 @@
 
-// TODO: fix string interpolation in message
-// TODO: virtual threads
 // TODO: hikari pooling
-// observer
-// tests
 // jwt

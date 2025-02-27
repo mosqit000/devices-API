@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.MessageFormat;
+
 @RestController
 @RequestMapping("/device")
 public class DeviceController {
@@ -32,7 +34,7 @@ public class DeviceController {
     {
         deviceService.updateDevice(id,device);
         return  customResponse.OK("update device",
-                String.format("device with id {1} created successfully",id),
+                MessageFormat.format("device with id {0} created successfully",id),
                 null);
     }
 
@@ -47,7 +49,7 @@ public class DeviceController {
     @GetMapping("fetch/{id}")
     public CustomResponse getDeviceByID(@PathVariable long id ){
         return customResponse.OK( "fetch single device",
-                String.format("device with id {1} fetched successfully",id),
+                MessageFormat.format("device with id {0} fetched successfully",id),
                 deviceService.getDeviceById(id));
 
     }
@@ -55,35 +57,35 @@ public class DeviceController {
     @GetMapping("brand/{brand}")
     public CustomResponse getDevicesByBrand(@PathVariable String brand){
         return customResponse.OK( "fetch devices by brand",
-                String.format("devices with brand {1} fetched successfully",brand),
+                MessageFormat.format("devices with brand {0} fetched successfully",brand),
                 deviceService.getAllDevicesByBrand(brand));
     }
 
     @GetMapping("state/{state}")
     public CustomResponse getDevicesByDeviceState(@PathVariable State state){
         return customResponse.OK( "fetch devices by state",
-                String.format("devices with state {1} fetched successfully",state),
+                MessageFormat.format("devices with state {0} fetched successfully",state),
                 deviceService.getAllDevicesByState(state));
     }
 
     @GetMapping("brand/group")
     public CustomResponse getDeviceGroupByBrand(){
         return customResponse.OK( "group devices by brand",
-                String.format("devices with brand {1} fetched successfully"),
+                "devices grouped by brand fetched successfully",
                 deviceService.getAllDevicesGroupedByBrand());
     }
 
     @GetMapping("state/group")
     public CustomResponse getDeviceGroupByDeviceState(){
         return customResponse.OK( "group devices by state",
-                String.format("devices with state {1} fetched successfully"),
+                "devices grouped by state  fetched successfully",
                 deviceService.getAllDevicesGroupedByState());
     }
 
     @DeleteMapping("delete/{id}")
     public CustomResponse deleteDeviceById(@PathVariable long id){
         return customResponse.OK( "fetch single device",
-                String.format("devices with id {1} deleted successfully",id),
+                MessageFormat.format("devices with id {0} deleted successfully",id),
                 deviceService.deleteDeviceById(id));
     }
 

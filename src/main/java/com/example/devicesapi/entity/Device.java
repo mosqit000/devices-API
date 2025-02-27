@@ -24,7 +24,7 @@ public class Device {
             name = "DeviceSeqGen",
             sequenceName = "DEVICE_SEQ",
             allocationSize = 1)
-    private long id;
+    private Long id;
 
     @JsonProperty("name")
     private String name;

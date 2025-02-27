@@ -28,6 +28,9 @@ public class DeviceService {
 
     public void createDevice(Device device){
         // to avoid passing wrong arguments from user or old dates
+        if(device.getId() != null){
+            throw new CustomException("create device","can't set ID manually");
+        }
         device.setCreationTime(LocalDateTime.now());
         deviceRepository.saveAndFlush(device);
     }

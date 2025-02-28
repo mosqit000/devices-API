@@ -1,6 +1,19 @@
 version: "3.4"
 
 services:
+  app:
+    build: .
+    container_name: aj-devicesapi-app
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+    environment:
+      spring_datasource_url: "jdbc:postgresql://db:5432/test"
+      spring_jpa_database: "POSTGRESQL"
+      spring_datasource_username: "amer"
+      spring_datasource_password: "amer"
+
   db:
     image: "postgis/postgis:13-3.1-alpine"
     restart: always

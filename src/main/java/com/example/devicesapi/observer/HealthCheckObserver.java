@@ -20,6 +20,6 @@ public class HealthCheckObserver implements Runnable{
         // this is just a sample of observers, can be used for example with actual health checks
         taskScheduler.scheduleAtFixedRate(() -> {
             System.out.println("Health check from observer at : "+ LocalDateTime.now());
-        }, Duration.ofSeconds(5));
+        }, Duration.ofSeconds(15));
     }
 }
